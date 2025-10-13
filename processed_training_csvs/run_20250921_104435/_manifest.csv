@@ -1,0 +1,7 @@
+file,written,rows
+01_enriched_base.csv,True,14065
+02_apidf_training_rows.csv,True,14065
+03_Xtabdf_raw_features.csv,True,13793
+04_Xtabprocessed_prepared.csv,True,13793
+05_targets_ymat.csv,True,13793
+09_kaggle_fertilizer_raw.csv,True,8000
