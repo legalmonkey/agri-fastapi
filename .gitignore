@@ -2,5 +2,3 @@ pycache/
 .venv/
 .env
 .DS_Store
-processed_training_csvs/run_*/
-artifacts_yield/
