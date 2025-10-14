@@ -115,7 +115,7 @@ def recommend_for_crop(crop: str) -> dict:
         }
     return rule
 
-# ------------------------------ Georesolver (from enriched base) ------------------------------
+# ------------------------------ Georesolver ------------------------------
 def resolve_lat_lon(state: str, district: str):
     df = _load_enriched_base()
     if df.empty:
@@ -135,7 +135,7 @@ def resolve_lat_lon(state: str, district: str):
             return float(lat.iloc[0]), float(lon.iloc[0])
     return (22.9734, 78.6569)
 
-# ------------------------------ NASA POWER with QC & unit handling ------------------------------
+# ------------------------------ NASA POWER ------------------------------
 def _clip_temp_celsius(vals: List[float]) -> List[float]:
     out = []
     for v in vals:
@@ -211,7 +211,7 @@ def fetch_prev_week_weather(lat: float, lon: float, end_date: Optional[str]) -> 
     except Exception:
         return {"Rainfall_sum": 0.0, "Tavg_mean": 0.0, "Tmax_mean": 0.0, "Tmin_mean": 0.0, "ET0_sum": 0.0, "GDD_sum": 0.0}
 
-# ------------------------------ Historical sequence builder ------------------------------
+# ------------------------------ Historical sequence ------------------------------
 def _nearest_bucket_frame(lat: float, lon: float, crop: str) -> (List[str], np.ndarray):
     df = _load_enriched_base()
     if df.empty:
@@ -250,33 +250,33 @@ def _safe_load_model():
 
 _safe_load_model()
 
-# ------------------------------ Core prediction (EXACT working logic, no unit conversion) ------------------------------
+# ------------------------------ Core prediction (ML math unchanged) ------------------------------
 def _predict_core(state: str, district: str, crop: str, land_area: float, end_date: Optional[str]):
     if not _ready.get("ok", False):
         raise RuntimeError(f"Model not ready: {_ready.get('reason')}")
 
-    # 1) Resolve lat/lon from enriched base
     lat, lon = resolve_lat_lon(state, district)
-
-    # 2) Build historical sequence (standardized feature names)
     feats_hist, X_seq = _nearest_bucket_frame(lat, lon, crop)
 
-    # 3) Fetch past-week NASA POWER weather and build live vector in seq_meta order
     week = fetch_prev_week_weather(lat, lon, end_date=end_date)
     wk_vec = [float(week.get(f, 0.0)) for f in _seq_meta["seq_features"]]
 
-    # 4) Append live vector as the last step
     X_seq = np.vstack([X_seq, np.array(wk_vec, dtype=np.float32)])
 
-    # 5) Cap and pad using seq_meta cap_len/max_len
     cap_len = int(_seq_meta["cap_len"]); max_len = int(_seq_meta["max_len"])
     cap = min(cap_len, max_len)
     X_cap = X_seq[-cap:] if len(X_seq) > cap else X_seq
     X_padded = pad_sequences([X_cap], maxlen=max_len, dtype="float32", padding="pre", truncating="pre")
     X_padded = np.nan_to_num(X_padded, nan=0.0, posinf=0.0, neginf=0.0)
 
-    # 6) Predict full sequence and pick last valid step based on non-zero padded rows
-    yhat_seq = _lstm_model.predict(X_padded, verbose=0)[:, :, 0][0]
+    yhat = _lstm_model.predict(X_padded, verbose=0)
+    if yhat.ndim == 3:
+        yhat_seq = yhat[:, :, 0][0]
+    elif yhat.ndim == 2:
+        yhat_seq = yhat[0, :]
+    else:
+        yhat_seq = np.ravel(yhat)
+
     valid_mask = (X_padded[0].sum(axis=1) != 0)
     idxs = np.where(valid_mask)[0]
     if idxs.size > 0:
@@ -285,11 +285,10 @@ def _predict_core(state: str, district: str, crop: str, land_area: float, end_da
         nz = yhat_seq[np.nonzero(yhat_seq)]
         y_pred_unit = float(nz.mean()) if nz.size else float(yhat_seq[-1])
 
-    # 7) No unit conversion; model output is interpreted as tonnes/ha
-    yield_per_area_pred = y_pred_unit                       # tonnes/ha
-    production_pred = yield_per_area_pred * float(land_area)  # tonnes
+    # Interpret model per-area result; UI shows tonnes/acre
+    yield_per_area_pred = y_pred_unit
+    production_pred = yield_per_area_pred * float(land_area)
 
-    # Weather display (renamed for UI only)
     week_display = {
         "Rainfall_sum (in mm)": float(week.get("Rainfall_sum", 0.0)),
         "Average Mean Temp": float(week.get("Tavg_mean", 0.0)),
@@ -300,8 +299,8 @@ def _predict_core(state: str, district: str, crop: str, land_area: float, end_da
     return {
         "state": state, "district": district, "crop": crop,
         "lat": lat, "lon": lon,
-        "yield_per_area_pred": yield_per_area_pred,   # tonnes/ha
-        "area_input": land_area,
+        "yield_per_area_pred": yield_per_area_pred,  # displayed as tonnes/acre
+        "area_input": land_area,                      # acres
         "production_pred": production_pred,           # tonnes
         "week_features": week_display,
         "end_date_used": end_date
@@ -336,36 +335,17 @@ def form():
       background: radial-gradient(1800px 1000px at 60% 0%, #0f1a14 0%, #0b130f 40%, var(--bg) 80%) no-repeat, var(--bg);
       color:var(--text);
     }
-    .container{
-      min-height: 100%;
-      width: 100%;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-      padding: 48px 24px;
-    }
+    .container{ min-height: 100%; width: 100%; display: flex; align-items: flex-start; justify-content: center; padding: 48px 24px; }
     .panel{
-      width: 100%;
-      max-width: 1200px;
-      padding: 46px 36px 40px;
-      border-radius: 18px;
-      background: var(--card);
-      border: 1px solid var(--card-border);
-      backdrop-filter: blur(14px) saturate(140%);
-      -webkit-backdrop-filter: blur(14px) saturate(140%);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
-      position: relative;
+      width: 100%; max-width: 1200px; padding: 46px 36px 40px; border-radius: 18px; background: var(--card);
+      border: 1px solid var(--card-border); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06); position: relative;
     }
     .home-btn{
-      position: absolute;
-      top: 18px; right: 18px;
-      display:inline-flex; align-items:center; gap:10px;
-      padding:10px 14px; border-radius:12px; color: var(--text);
-      text-decoration:none; background: rgba(48, 209, 88, 0.12);
-      border:1px solid rgba(48, 209, 88, 0.22);
-      transition: all .2s ease;
+      position: absolute; top: 18px; right: 18px; display:inline-flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; color: var(--text);
+      text-decoration:none; background: rgba(48, 209, 88, 0.12); border:1px solid rgba(48, 209, 88, 0.22); transition: all .2s ease;
     }
-    h1{ margin: 6px 0 8px; font-size: clamp(32px, 3.6vw, 56px); letter-spacing: 0.2px; text-align: center; font-weight: 800; }
+    h1{ margin:6px 0 8px; font-size: clamp(32px, 3.6vw, 56px); text-align: center; font-weight: 800; }
     .title-plain { color: #ecfff3; } .title-accent { color: var(--accent); }
     .subtitle{ margin: 0 0 30px; text-align:center; color: var(--muted); font-size: 16px; }
 
@@ -375,9 +355,8 @@ def form():
     .label small{ color:#9eb1a6; font-weight:500; }
 
     .input{
-      width:100%; padding:16px 16px; border-radius:12px; border:1px solid var(--input-border);
-      background: var(--input-bg); color: var(--text); outline:none;
-      transition: border-color .2s, box-shadow .2s, background .2s; font-size:16px;
+      width:100%; padding:16px 16px; border-radius:12px; border:1px solid var(--input-border); background: var(--input-bg);
+      color: var(--text); outline:none; transition: border-color .2s, box-shadow .2s, background .2s; font-size:16px;
     }
     .input::placeholder{ color:#94a89c; }
     .input:focus{ border-color:var(--input-focus); box-shadow:0 0 0 4px rgba(48,209,88,0.15); background:rgba(255,255,255,0.09); }
@@ -386,12 +365,21 @@ def form():
 
     .btn{
       margin-top: 8px; padding: 18px 20px; width:100%; border:none; border-radius:14px; font-size:18px; font-weight:700; color:#052d14;
-      background: linear-gradient(90deg, #28d17a 0%, #30d158 45%, #28d17a 100%);
-      cursor:pointer; transition: transform .08s, filter .2s, box-shadow .2s;
+      background: linear-gradient(90deg, #28d17a 0%, #30d158 45%, #28d17a 100%); cursor:pointer; transition: transform .08s, filter .2s, box-shadow .2s;
       box-shadow: 0 10px 24px rgba(48,209,88,0.25), inset 0 1px 0 rgba(255,255,255,0.35);
     }
     .btn:hover{ filter: brightness(1.03); }
     .btn:active{ transform: translateY(1px); }
+
+    /* Safe, accessible select styling */
+    select.input{
+      color:#e6f5ea; background-color: rgba(255,255,255,0.06);
+      max-width: 100%;
+      border-color: var(--input-border);
+    }
+    select.input option{
+      color:#0b130f; background:#ffffff; /* always visible option text */
+    }
   </style>
 </head>
 <body>
@@ -416,13 +404,71 @@ def form():
 
         <div class="field">
           <label class="label" for="crop"><span class="dot"></span> Crop Type</label>
-          <input class="input" id="crop" name="crop" type="text" placeholder="Enter crop (e.g., Wheat, Rice)" required />
+          <select class="input" id="crop" name="crop" required>
+            <option value="" disabled selected>Select a crop</option>
+            <option>Arecanut</option>
+            <option>Arhar/Tur</option>
+            <option>Bajra</option>
+            <option>Banana</option>
+            <option>Barley</option>
+            <option>Black pepper</option>
+            <option>Cardamom</option>
+            <option>Cashewnut</option>
+            <option>Castor seed</option>
+            <option>Coconut</option>
+            <option>Coriander</option>
+            <option>Cotton(lint)</option>
+            <option>Cowpea(Lobia)</option>
+            <option>Dry chillies</option>
+            <option>Dry ginger</option>
+            <option>Garlic</option>
+            <option>Ginger</option>
+            <option>Gram</option>
+            <option>Groundnut</option>
+            <option>Guar seed</option>
+            <option>Horse-gram</option>
+            <option>Jowar</option>
+            <option>Jute</option>
+            <option>Khesari</option>
+            <option>Linseed</option>
+            <option>Maize</option>
+            <option>Mango</option>
+            <option>Masoor</option>
+            <option>Mesta</option>
+            <option>Moong(Green Gram)</option>
+            <option>Moth</option>
+            <option>Niger seed</option>
+            <option>Oilseeds total</option>
+            <option>Onion</option>
+            <option>Other  Rabi pulses</option>
+            <option>Other Cereals & Millets</option>
+            <option>Other Kharif pulses</option>
+            <option>Peas & beans (Pulses)</option>
+            <option>Potato</option>
+            <option>Ragi</option>
+            <option>Rapeseed &Mustard</option>
+            <option>Rice</option>
+            <option>Safflower</option>
+            <option>Sannhamp</option>
+            <option>Sesamum</option>
+            <option>Small millets</option>
+            <option>Soyabean</option>
+            <option>Sugarcane</option>
+            <option>Sunflower</option>
+            <option>Sweet potato</option>
+            <option>Tapioca</option>
+            <option>Tobacco</option>
+            <option>Turmeric</option>
+            <option>Urad</option>
+            <option>Wheat</option>
+            <option>other oilseeds</option>
+          </select>
         </div>
 
         <div class="row">
           <div class="field">
-            <label class="label" for="land"><span class="dot"></span> Land Size (Hectares)</label>
-            <input class="input" id="land" name="land_area" type="number" inputmode="decimal" step="0.01" min="0" placeholder="Enter land size" required />
+            <label class="label" for="land"><span class="dot"></span> Land Size (Acres)</label>
+            <input class="input" id="land" name="land_area" type="number" inputmode="decimal" step="0.01" min="0" placeholder="Enter land size in acres" required />
           </div>
           <div class="field">
             <label class="label" for="endDate"><span class="dot"></span> End Date <small>(for real-time weather data purposes)</small></label>
@@ -461,9 +507,10 @@ def predict(
             try: return f"{float(x):,.3f}"
             except: return str(x)
 
-        per_ha_txt_4 = _f4(out["yield_per_area_pred"])     # tonnes/ha (no conversion)
-        total_txt_4  = _f4(out["production_pred"])         # tonnes (no conversion)
+        per_area_txt_4 = _f4(out["yield_per_area_pred"])  # tonnes/acre (display)
+        total_txt_4  = _f4(out["production_pred"])        # tonnes
         lat_fmt      = _f3(out["lat"]); lon_fmt = _f3(out["lon"])
+        acres_disp   = f"{float(out['area_input']):.2f}"
 
         # Recommendations
         reco = recommend_for_crop(out["crop"])
@@ -474,7 +521,7 @@ def predict(
         pest_active_list = reco.get("pesticides", [])
         pest_grid_items = "".join([f'<div class="pill">{a}</div>' for a in (pest_active_list if pest_active_list else ["No actives"])])
 
-        # Weather rows (already QC'ed)
+        # Weather rows
         week = out.get("week_features", {}) or {}
         week_rows = "".join(
             f'<div class="kv"><span class="k">{k}</span><span class="v">{_f3(v)}</span></div>'
@@ -502,7 +549,7 @@ html,body{{ height:100%; margin:0; font-family:"Inter",system-ui,-apple-system,S
 .header{{ text-align:center; margin-bottom: 26px; position: relative; }}
 .top-home{{ position:absolute; top:-8px; right:0; }}
 .home-btn-small{{ display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:12px; color:#e6f5ea;
-                  text-decoration:none; background: rgba(48, 209, 88, 0.12); border:1px solid rgba(48, 209, 88, 0.22); }}
+                 text-decoration:none; background: rgba(48, 209, 88, 0.12); border:1px solid rgba(48, 209, 88, 0.22); }}
 
 .h-title{{ font-size: clamp(32px, 4.5vw, 58px); font-weight: 800; letter-spacing:.3px; }}
 .h-title .accent{{ color: var(--accent); }}
@@ -548,19 +595,18 @@ html,body{{ height:100%; margin:0; font-family:"Inter",system-ui,-apple-system,S
           <div class="kv"><span class="k">State</span><span class="v">{out["state"]}</span></div>
           <div class="kv"><span class="k">District</span><span class="v">{out["district"]}</span></div>
           <div class="kv"><span class="k">Crop</span><span class="v">{out["crop"]}</span></div>
-          <div class="kv"><span class="k">Area (hectares)</span><span class="v">{float(out["area_input"]):.2f}</span></div>
+          <div class="kv"><span class="k">Area (acres)</span><span class="v">{acres_disp}</span></div>
         </div>
 
         <div class="card">
           <h3>Predicted {out["crop"]} yield</h3>
-          <div class="yield-big">{per_ha_txt_4} tonnes/ha</div>
+          <div class="yield-big">{per_area_txt_4} tonnes/acre</div>
           <div class="yield-sub">Estimated total (model): {total_txt_4} tonnes</div>
         </div>
       </div>
 
       <!-- Recommendation Cards -->
       <div class="grid-2" style="margin-top:18px;">
-        <!-- Irrigation Strategy -->
         <div class="card" style="background:linear-gradient(180deg, rgba(7,20,15,.6), rgba(7,20,15,.45)); border-color:rgba(48,209,88,0.18);">
           <div style="display:flex;align-items:center;gap:12px;">
             <div style="width:44px;height:44px;border-radius:12px;background:rgba(48,209,88,.12);display:flex;align-items:center;justify-content:center;border:1px solid rgba(48,209,88,.25);">💧</div>
@@ -570,7 +616,6 @@ html,body{{ height:100%; margin:0; font-family:"Inter",system-ui,-apple-system,S
           <div class="yield-sub">{irr_sub}</div>
         </div>
 
-        <!-- Fertilizer Blend -->
         <div class="card" style="background:linear-gradient(180deg, rgba(36,28,5,.62), rgba(30,24,4,.45)); border-color:rgba(255,198,69,0.22);">
           <div style="display:flex;align-items:center;gap:12px;">
             <div style="width:44px;height:44px;border-radius:12px;background:rgba(255,198,69,.12);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,198,69,.3);">🧪</div>
@@ -581,21 +626,19 @@ html,body{{ height:100%; margin:0; font-family:"Inter",system-ui,-apple-system,S
         </div>
       </div>
 
-      <!-- Pesticides (Actives only) -->
+      <!-- Pesticides -->
       <div class="card" style="margin-top:18px;background:linear-gradient(180deg, rgba(18,7,32,.55), rgba(18,7,32,.45)); border-color:rgba(155,125,200,0.18);">
         <div style="display:flex;align-items:center;gap:12px;">
           <div style="width:44px;height:44px;border-radius:12px;background:rgba(155,125,200,.12);display:flex;align-items:center;justify-content:center;border:1px solid rgba(155,125,200,.3);">🛡️</div>
           <h3 style="margin:0;">Recommended Pesticides</h3>
         </div>
-        <div class="pest-grid">
-          {pest_grid_items}
-        </div>
+        <div class="pest-grid">{pest_grid_items}</div>
       </div>
 
       <!-- Advanced insights -->
       <div class="adv-wrap">
-        <button class="adv-btn" id="advToggle">Advanced insights</button>
-        <div class="card adv-card" id="advCard">
+        <button class="adv-btn" id="advToggle" aria-expanded="false">Advanced insights</button>
+        <div class="card adv-card" id="advCard" aria-hidden="true" style="display:none;">
           <div class="adv-grid">
             <div class="card">
               <h3>Model Context</h3>
@@ -613,20 +656,35 @@ html,body{{ height:100%; margin:0; font-family:"Inter",system-ui,-apple-system,S
 
     </div>
   </div>
-
 <script>
-  // Advanced insights toggle (escape braces for f-string)
   document.addEventListener('DOMContentLoaded', function () {{
+    // Bias select to open downward by ensuring viewport room
+    const cropSel = document.getElementById('crop');
+    if (cropSel) {{
+      cropSel.addEventListener('focus', function() {{
+        const rect = cropSel.getBoundingClientRect();
+        const spaceBelow = window.innerHeight - rect.bottom;
+        if (spaceBelow < 220) {{
+          window.scrollBy({{ top: 220 - spaceBelow + 20, behavior: 'smooth' }});
+        }}
+      }});
+    }}
+
+    // Advanced insights toggle (robust to repeated clicks and initial state)
     var advBtn = document.getElementById('advToggle');
     var advCard = document.getElementById('advCard');
     if (!advBtn || !advCard) return;
+    if (!advCard.style.display) advCard.style.display = 'none';
     advBtn.addEventListener('click', function () {{
       var show = advCard.style.display !== 'block';
       advCard.style.display = show ? 'block' : 'none';
       advBtn.textContent = show ? 'Hide advanced insights' : 'Advanced insights';
+      advCard.setAttribute('aria-hidden', show ? 'false' : 'true');
+      advBtn.setAttribute('aria-expanded', show ? 'true' : 'false');
     }});
   }});
 </script>
+
 
 </body>
 </html>
