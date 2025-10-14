@@ -691,7 +691,7 @@ html,body{{ height:100%; margin:0; font-family:"Inter",system-ui,-apple-system,S
 """
         return HTMLResponse(html)
     except Exception as e:
-        return JSONResponse({"error": str(e)}, status_code=400)
+        return JSONResponse(content={"error": str(e)}, status_code=400)
 
 @app.post("/predict/", response_class=HTMLResponse)
 def predict_trailing(
