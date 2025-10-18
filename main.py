@@ -488,6 +488,30 @@ def form():
 def health():
     return "ok"
 
+@app.get("/debug", response_class=HTMLResponse)
+def debug():
+    global _ready, _lstm_model, _seq_meta
+    model_status = "Model loaded" if _lstm_model is not None else "Model not loaded"
+    meta_status = f"Metadata loaded: {len(_seq_meta)} keys" if _seq_meta else "Metadata not loaded"
+    
+    return f"""
+    <html>
+    <head><title>Debug Info</title></head>
+    <body>
+    <h2>Debug Information</h2>
+    <p><strong>Ready Status:</strong> {_ready}</p>
+    <p><strong>Model Status:</strong> {model_status}</p>
+    <p><strong>Metadata Status:</strong> {meta_status}</p>
+    <p><strong>Model Directory:</strong> {MODEL_DIR}</p>
+    <p><strong>Meta Path:</strong> {META_PATH}</p>
+    <p><strong>Model Dir Exists:</strong> {os.path.exists(MODEL_DIR)}</p>
+    <p><strong>Meta File Exists:</strong> {os.path.exists(META_PATH)}</p>
+    <p><strong>Current Working Directory:</strong> {os.getcwd()}</p>
+    <p><strong>Files in artifacts_yield:</strong> {os.listdir(ART_DIR) if os.path.exists(ART_DIR) else 'Directory not found'}</p>
+    </body>
+    </html>
+    """
+
 # ------------------------------ Results page ------------------------------
 @app.post("/predict", response_class=HTMLResponse)
 def predict(
