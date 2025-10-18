@@ -1,0 +1,282 @@
+{
+  "arecanut": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + Urea split", "note": "Apply in rings; add FYM; split N during monsoon." },
+    "irrigation": { "title": "Drip Irrigation", "subtitle": "Efficient for perennial palms" },
+    "pesticides": ["Chlorpyrifos", "Imidacloprid", "Copper oxychloride"]
+  },
+  "arhar/tur": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal + Urea topdress (light)", "note": "Phosphorus critical; moderate N; Rhizobium inoculation helps" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Supplemental irrigation at flowering/pod set" },
+    "pesticides": ["Emamectin benzoate", "Spinosad", "Lambda-cyhalothrin"]
+  },
+  "bajra": {
+    "fertilizer_blend": { "npk": "NPK 20-20-0 basal + Urea topdress", "note": "Split N at tillering; adjust per rainfall" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Uniform application for coarse cereals" },
+    "pesticides": ["Imidacloprid", "Thiamethoxam", "Mancozeb"]
+  },
+  "banana": {
+    "fertilizer_blend": { "npk": "NPK 19-19-19 water-soluble via fertigation + MOP (0-0-60)", "note": "Increase K during fruiting; split doses" },
+    "irrigation": { "title": "Drip Irrigation", "subtitle": "Fertigation friendly for high K needs" },
+    "pesticides": ["Propiconazole", "Chlorpyrifos", "Copper hydroxide"]
+  },
+  "barley": {
+    "fertilizer_blend": { "npk": "NPK 18-46-0 basal + Urea topdress", "note": "N split at early tillering" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Light irrigation at critical stages" },
+    "pesticides": ["Tebuconazole", "Imidacloprid", "Mancozeb"]
+  },
+  "black pepper": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + Organic manure", "note": "Split applications; add micronutrients on deficiency" },
+    "irrigation": { "title": "Drip Irrigation", "subtitle": "Localized watering for vines" },
+    "pesticides": ["Copper oxychloride", "Mancozeb", "Dimethoate"]
+  },
+  "cardamom": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + Neem cake", "note": "Split N and K; shade-grown perennial" },
+    "irrigation": { "title": "Drip Irrigation", "subtitle": "Maintain soil moisture; avoid waterlogging" },
+    "pesticides": ["Copper oxychloride", "Emamectin benzoate", "Imidacloprid"]
+  },
+  "cashewnut": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + 0-0-60", "note": "Apply in basins; supplement with FYM" },
+    "irrigation": { "title": "Drip Irrigation", "subtitle": "Perennial tree; efficient watering" },
+    "pesticides": ["Copper oxychloride", "Lambda-cyhalothrin", "Imidacloprid"]
+  },
+  "castor seed": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal + Urea topdress", "note": "Balanced N and P; moderate K" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Light irrigations at branching and capsule set" },
+    "pesticides": ["Emamectin benzoate", "Thiamethoxam", "Mancozeb"]
+  },
+  "coconut": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + 0-0-60 split", "note": "Apply in basins; add organic matter" },
+    "irrigation": { "title": "Drip Irrigation", "subtitle": "Perennial palm; efficient root-zone watering" },
+    "pesticides": ["Chlorpyrifos", "Copper oxychloride", "Dimethoate"]
+  },
+  "coriander": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 light", "note": "Moderate N; avoid lodging" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Gentle irrigation for herbs" },
+    "pesticides": ["Mancozeb", "Copper oxychloride", "Imidacloprid"]
+  },
+  "cotton(lint)": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 and Urea splits", "note": "Balanced N and K; avoid excess N late" },
+    "irrigation": { "title": "Drip Irrigation", "subtitle": "Row crop; fertigation compatible" },
+    "pesticides": ["Emamectin benzoate", "Thiamethoxam", "Tebuconazole"]
+  },
+  "cowpea(lobia)": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light) + Urea minimal", "note": "Low N due to fixation; P important" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Supplement at flowering/pod fill" },
+    "pesticides": ["Imidacloprid", "Lambda-cyhalothrin", "Mancozeb"]
+  },
+  "dry chillies": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 splits", "note": "High K for fruit quality" },
+    "irrigation": { "title": "Drip Irrigation", "subtitle": "Row crop; manage blossom drop with uniform moisture" },
+    "pesticides": ["Emamectin benzoate", "Chlorantraniliprole", "Copper oxychloride"]
+  },
+  "dry ginger": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + FYM", "note": "Add organics; split N and K" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Uniform moisture in raised beds" },
+    "pesticides": ["Mancozeb", "Copper oxychloride", "Azoxystrobin"]
+  },
+  "garlic": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 during bulb formation", "note": "Balanced N early; K for bulbs" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Light frequent irrigations; avoid waterlogging" },
+    "pesticides": ["Mancozeb", "Metalaxyl-M", "Lambda-cyhalothrin"]
+  },
+  "ginger": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + FYM", "note": "Split N and K; mulch recommended" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Moist beds; avoid stagnation" },
+    "pesticides": ["Mancozeb", "Copper oxychloride", "Emamectin benzoate"]
+  },
+  "gram": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light) + minimal Urea", "note": "Low N; P crucial for nodulation" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "One/two lifesaving irrigations if needed" },
+    "pesticides": ["Imidacloprid", "Chlorantraniliprole", "Mancozeb"]
+  },
+  "groundnut": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + Gypsum + 0-0-60 light", "note": "Calcium at pegging; split N minimal" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Critical at flowering/pegging/pod fill" },
+    "pesticides": ["Chlorantraniliprole", "Thiamethoxam", "Tebuconazole"]
+  },
+  "guar seed": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Low N; ensure P for nodulation" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Rainfed with supplemental irrigation" },
+    "pesticides": ["Imidacloprid", "Lambda-cyhalothrin", "Mancozeb"]
+  },
+  "horse-gram": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Low N; P important" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "One/two supplemental irrigations" },
+    "pesticides": ["Imidacloprid", "Thiamethoxam", "Mancozeb"]
+  },
+  "jowar": {
+    "fertilizer_blend": { "npk": "NPK 20-20-0 basal + Urea topdress", "note": "Split N at tillering and booting" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Uniform watering for sorghum" },
+    "pesticides": ["Imidacloprid", "Lambda-cyhalothrin", "Mancozeb"]
+  },
+  "jute": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + Urea split", "note": "Balanced N for fiber; avoid lodging" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Even moisture for retting quality" },
+    "pesticides": ["Mancozeb", "Copper oxychloride", "Imidacloprid"]
+  },
+  "khesari": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Low N; phosphorus helps" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Rainfed legume; supplemental irrigation if dry" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Lambda-cyhalothrin"]
+  },
+  "linseed": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 light", "note": "Moderate N; avoid excessive vegetative growth" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Light irrigation at flowering" },
+    "pesticides": ["Mancozeb", "Tebuconazole", "Imidacloprid"]
+  },
+  "maize": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal + Urea splits + 0-0-60 (as needed)", "note": "Split N at V4–V8 and before tasseling" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Critical at tasseling and grain fill" },
+    "pesticides": ["Chlorantraniliprole", "Emamectin benzoate", "Mancozeb"]
+  },
+  "mango": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + 0-0-60 split", "note": "Apply in basins; increase K pre-flowering" },
+    "irrigation": { "title": "Drip Irrigation", "subtitle": "Perennial orchard; deficit irrigation off-season" },
+    "pesticides": ["Copper oxychloride", "Imidacloprid", "Carbendazim"]
+  },
+  "masoor": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Low N; P for nodulation" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "One/two irrigations in dry spells" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Lambda-cyhalothrin"]
+  },
+  "mesta": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + Urea split", "note": "Balanced N for bast fiber crops" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Uniform moisture" },
+    "pesticides": ["Mancozeb", "Imidacloprid", "Copper oxychloride"]
+  },
+  "moong(green gram)": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Low N; seed inoculation advised" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "One/two irrigations at flowering/pod fill" },
+    "pesticides": ["Imidacloprid", "Lambda-cyhalothrin", "Mancozeb"]
+  },
+  "moth": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Pulse with low N need" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Mostly rainfed; irrigate if prolonged dry" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Lambda-cyhalothrin"]
+  },
+  "niger seed": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal (light)", "note": "Low N; moderate P" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Light irrigation if necessary" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Lambda-cyhalothrin"]
+  },
+  "oilseeds total": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 as needed", "note": "Oilseeds favor P and K; avoid excess N" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Critical stages: flowering/pod fill" },
+    "pesticides": ["Thiamethoxam", "Chlorantraniliprole", "Mancozeb"]
+  },
+  "onion": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 during bulb development", "note": "Balanced N early; higher K later" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Frequent light irrigations; avoid crusting" },
+    "pesticides": ["Mancozeb", "Metalaxyl-M", "Lambda-cyhalothrin"]
+  },
+  "other  rabi pulses": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Low N; phosphorus for nodulation" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Supplemental irrigation if dry" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Lambda-cyhalothrin"]
+  },
+  "other cereals & millets": {
+    "fertilizer_blend": { "npk": "NPK 20-20-0 basal + Urea splits", "note": "Split N at tillering/booting" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Uniform coverage for small grains" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Thiamethoxam"]
+  },
+  "other kharif pulses": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Low N; ensure P availability" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Irrigate at flowering/pod fill if needed" },
+    "pesticides": ["Imidacloprid", "Lambda-cyhalothrin", "Mancozeb"]
+  },
+  "peas & beans (pulses)": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Low N; P helps early root growth" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Flowering/pod development critical" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Lambda-cyhalothrin"]
+  },
+  "potato": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 splits", "note": "High K for tuber quality; avoid late high N" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Regular, light irrigations" },
+    "pesticides": ["Mancozeb", "Metalaxyl-M", "Chlorantraniliprole"]
+  },
+  "ragi": {
+    "fertilizer_blend": { "npk": "NPK 20-20-0 basal + Urea topdress", "note": "Split N at tillering/boot" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Uniform irrigation for finger millet" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Thiamethoxam"]
+  },
+  "rapeseed &mustard": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 light + Sulphur", "note": "S is important for oil content" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "At flowering/siliqua fill if needed" },
+    "pesticides": ["Thiamethoxam", "Imidacloprid", "Mancozeb"]
+  },
+  "rice": {
+    "fertilizer_blend": { "npk": "NPK 18-46-0 + 0-0-60 (split)", "note": "Adjust by soil test; split N and K." },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Optimized for cereals/loams" },
+    "pesticides": ["Imidacloprid", "Fipronil", "Chlorantraniliprole"]
+  },
+  "safflower": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal", "note": "Low N; deep-rooted oilseed" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "One/two irrigations in drought" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Lambda-cyhalothrin"]
+  },
+  "sannhamp": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal", "note": "Fiber/green manure crop; low N need" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Mostly rainfed; irrigate if needed" },
+    "pesticides": ["Mancozeb", "Imidacloprid", "Copper oxychloride"]
+  },
+  "sesamum": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 light", "note": "Avoid high N; emphasize P, K" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Light irrigation at flowering" },
+    "pesticides": ["Thiamethoxam", "Lambda-cyhalothrin", "Mancozeb"]
+  },
+  "small millets": {
+    "fertilizer_blend": { "npk": "NPK 20-20-0 basal + Urea topdress", "note": "Split N for steady growth" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Uniform coverage for small seeds" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Thiamethoxam"]
+  },
+  "soyabean": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Low N; P for nodulation; sulphur helps" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Critical at flowering/pod fill" },
+    "pesticides": ["Tebuconazole", "Chlorantraniliprole", "Thiamethoxam"]
+  },
+  "sugarcane": {
+    "fertilizer_blend": { "npk": "NPK 19-19-19 via fertigation + Urea splits + 0-0-60", "note": "High N and K; split through season" },
+    "irrigation": { "title": "Drip Irrigation", "subtitle": "Saves water; supports fertigation" },
+    "pesticides": ["Chlorpyrifos", "Imidacloprid", "Mancozeb"]
+  },
+  "sunflower": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 during bud stage", "note": "P and K important for oil and head fill" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "At bud to flowering critical" },
+    "pesticides": ["Lambda-cyhalothrin", "Chlorantraniliprole", "Mancozeb"]
+  },
+  "sweet potato": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal + 0-0-60", "note": "Higher K for tuber quality" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Consistent moisture for tuber set" },
+    "pesticides": ["Mancozeb", "Lambda-cyhalothrin", "Copper oxychloride"]
+  },
+  "tapioca": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + 0-0-60 splits", "note": "Root crop; emphasize K" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Light frequent irrigations" },
+    "pesticides": ["Mancozeb", "Copper oxychloride", "Dimethoate"]
+  },
+  "tobacco": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal + 0-0-60", "note": "K influences leaf quality; avoid excessive N" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Manage leaf quality with uniform moisture" },
+    "pesticides": ["Imidacloprid", "Mancozeb", "Tebuconazole"]
+  },
+  "turmeric": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 + FYM; split N and K", "note": "Mulch; maintain moisture" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Raised beds; avoid waterlogging" },
+    "pesticides": ["Mancozeb", "Copper oxychloride", "Azoxystrobin"]
+  },
+  "urad": {
+    "fertilizer_blend": { "npk": "NPK 10-26-26 basal (light)", "note": "Pulse; low N need; P essential" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Supplemental irrigation at flowering/pod fill" },
+    "pesticides": ["Imidacloprid", "Lambda-cyhalothrin", "Mancozeb"]
+  },
+  "wheat": {
+    "fertilizer_blend": { "npk": "NPK 18-46-0 + Urea topdress", "note": "Split N 2–3 times; add K if low." },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Uniform coverage for cereals" },
+    "pesticides": ["Imidacloprid", "Lambda-cyhalothrin", "Tebuconazole"]
+  },
+  "other oilseeds": {
+    "fertilizer_blend": { "npk": "NPK 12-32-16 basal + 0-0-60 light", "note": "General oilseed guideline; adjust with soil test" },
+    "irrigation": { "title": "Sprinkler System", "subtitle": "Irrigate at flowering/pod fill" },
+    "pesticides": ["Thiamethoxam", "Mancozeb", "Lambda-cyhalothrin"]
+  }
+}
