@@ -385,7 +385,7 @@ def form():
 <body>
   <div class="container">
     <section class="panel" aria-label="Agricultural Analysis Form">
-      <a class="home-btn" href="https://agri-ai-4farmer.vercel.app/"><span aria-hidden="true">🏠</span><span>Home</span></a>
+      <a class="home-btn" href="#"><span aria-hidden="true">🏠</span><span>Home</span></a>
 
       <h1><span class="title-plain">Agricultural</span><span class="title-accent"> Analysis</span></h1>
       <p class="subtitle">Enter farm details to receive AI‑powered insights</p>
